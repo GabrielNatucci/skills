@@ -1,6 +1,6 @@
 # Minhas skills para agentes
 
-Seleção de skills para instalar em outros ambientes. Os comandos abaixo foram executados com sucesso no Codex em 17/11/2026, e a presença dos arquivos `SKILL.md` foi verificada. Isso confirma a instalação, não a execução de todos os fluxos de cada skill.
+Seleção de skills para instalar em outros ambientes. A instalação original foi verificada no Codex em 17/11/2026. Para o conjunto do tstack, a verificação cobre a instalação em um projeto temporário e a presença dos arquivos `SKILL.md`.
 
 ## Skills incluídas
 
@@ -13,6 +13,10 @@ Seleção de skills para instalar em outros ambientes. Os comandos abaixo foram 
 | `frontend-design` | [anthropics/skills](https://github.com/anthropics/skills) | Direção visual e criação de interfaces. |
 | `skill-creator` | [anthropics/skills](https://github.com/anthropics/skills) | Criar, melhorar e avaliar skills. |
 | `full-stop` | [t3dotgg/tstack](https://github.com/t3dotgg/tstack/tree/main/skills) | Conduzir o trabalho até um pull request pronto para revisão final, sem fazer merge. |
+| `full-send` | [t3dotgg/tstack](https://github.com/t3dotgg/tstack/tree/main/skills) | Conduzir o trabalho até o merge do pull request, quando as verificações e revisões permitirem. |
+| `sol-loop` | [t3dotgg/tstack](https://github.com/t3dotgg/tstack/tree/main/skills) | Revisar as mudanças antes de abrir o pull request. |
+| `file-pr` | [t3dotgg/tstack](https://github.com/t3dotgg/tstack/tree/main/skills) | Abrir o pull request. |
+| `babysit-pr` | [t3dotgg/tstack](https://github.com/t3dotgg/tstack/tree/main/skills) | Acompanhar verificações e revisões do pull request. |
 
 `web-design-guidelines` aparece uma única vez, mesmo tendo sido solicitada duas vezes.
 
@@ -26,7 +30,7 @@ Cole os comandos abaixo no terminal. Eles funcionam como linhas independentes ta
 npx --yes skills add https://github.com/mattpocock/skills --skill grill-me grilling --agent codex --global --yes
 npx --yes skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-best-practices web-design-guidelines --agent codex --global --yes
 npx --yes skills add https://github.com/anthropics/skills --skill frontend-design skill-creator --agent codex --global --yes
-npx --yes skills add https://github.com/t3dotgg/tstack --skill full-stop --agent codex --global --yes
+npx --yes skills add https://github.com/t3dotgg/tstack --skill full-stop full-send sol-loop file-pr babysit-pr --agent codex --global --yes
 ```
 
 O primeiro `--yes` permite ao npx obter o instalador sem perguntar; o último confirma as opções do instalador. `--agent codex` seleciona o Codex e `--global` instala para o usuário, em vez de apenas para um projeto.
@@ -40,7 +44,8 @@ Para escolher outro agente interativamente, remova `--agent codex` e o último `
 ## Dependências e limites
 
 - `grill-me` chama `grilling`; por isso ambas estão incluídas.
-- **`full-stop` depende de `full-send`:** o arquivo instalado manda ler `../full-send/SKILL.md` e seguir o fluxo descrito nele. Conforme a seleção solicitada, apenas `full-stop` foi instalada do tstack. Portanto, esse fluxo tem uma dependência ausente; instalar o arquivo de `full-stop` sozinho não confirma que seu fluxo completo funciona. Para completar a dependência no futuro, será necessário incluir `full-send` ou obter uma versão independente da skill.
+- `full-stop` segue o fluxo de `full-send` e deixa o pull request pronto para o usuário fazer o merge.
+- `full-send` usa `sol-loop`, `file-pr` e `babysit-pr`. O comando do tstack instala as cinco skills juntas.
 - A `skill-creator` desta seleção é a da Anthropic. O Codex também pode fornecer uma skill própria com o mesmo nome; use a origem para distinguir as duas.
 - Os comandos consultam o estado atual dos repositórios e do instalador. Eles reproduzem a seleção, mas não fixam versões ou commits.
 
